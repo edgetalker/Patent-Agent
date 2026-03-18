@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# 环境与密钥
+.env
+.venv/
+*.pem
+*.key
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# 系统文件
+.DS_Store
+Thumbs.db
