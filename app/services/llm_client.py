@@ -22,14 +22,14 @@ def get_llm() -> ChatOpenAI:
     """
     settings = get_settings()
     logger.info(
-        f"Initializing LLM | model={settings.deepseek_model} "
+        f"Initializing LLM | model={settings.llm_model_name} "
         f"max_tokens={settings.deepseek_max_tokens} "
         f"temperature={settings.deepseek_temperature}"
     )
     return ChatOpenAI(
-        model=settings.deepseek_model,
-        base_url=settings.deepseek_base_url,
-        api_key=settings.deepseek_api_key,
+        model=settings.llm_model_name,
+        base_url=settings.llm_base_url,
+        api_key=settings.llm_api_key,
         max_tokens=settings.deepseek_max_tokens,
         temperature=settings.deepseek_temperature,
         streaming=True,

@@ -1,15 +1,18 @@
+import os
 from functools import lru_cache
 from pydantic_settings import BaseSettings
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class Settings(BaseSettings):
     app_name: str = "Patent Agent API"
     app_version: str = "1.0.0"
     debug: bool = False
 
-    deepseek_api_key: str
-    deepseek_base_url: str = "https://api.deepkseek.com/v1"
-    deepseek_model: str = "deepseek-reasoning"
+    llm_api_key: str = os.getenv("LLM_API_KEY")
+    llm_base_url: str = os.getenv("LLM_BASE_URL")
+    llm_model_name: str = os.getenv("LLM_MODEL_NAME")
     deepseek_max_tokens: int = 4096
     deepseek_temperature: float = 0.3
 
