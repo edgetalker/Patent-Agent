@@ -46,32 +46,3 @@ class HealthResponse(BaseModel):
     status: str
     version: str
     timestamp: datetime
-
-
-# ─── SSE Event 内部结构（仅用于类型提示，实际以 JSON string 发送）─────────────
-
-class SSETokenEvent(BaseModel):
-    type: str = "token"
-    content: str
-
-
-class SSESessionCreatedEvent(BaseModel):
-    type: str = "session_created"
-    thread_id: str
-
-
-class SSEStepCompleteEvent(BaseModel):
-    type: str = "step_complete"
-    step: int
-    field: str          # state 中对应的字段名
-    output: str         # LLM 原始输出（供人工修改）
-
-
-class SSEPipelineCompleteEvent(BaseModel):
-    type: str = "pipeline_complete"
-    final_claims: str
-
-
-class SSEErrorEvent(BaseModel):
-    type: str = "error"
-    message: str

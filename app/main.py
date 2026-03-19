@@ -55,7 +55,7 @@ app = FastAPI(
     title=settings.app_name,
     version=settings.app_version,
     description=(
-        "基于 LangGraph HITL + DeepSeek API 的专利权利要求智能撰写系统。\n\n"
+        "基于 LangGraph HITL + LLM API 的专利权利要求智能撰写系统。\n\n"
         "**工作流程：** 技术交底书 → 7步撰写（每步含人工审核节点）→ 最终权利要求套件"
     ),
     lifespan=lifespan,

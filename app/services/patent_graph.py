@@ -49,7 +49,7 @@ class PatentState(TypedDict):
     prob_solution: str       # Step 2 输出：问题-解决方案陈述
     ind_claims: str          # Step 3 输出：独立权利要求
     dep_claims: str          # Step 4 输出：从属权利要求
-    def_claims: str          # Step 5 输出：定义用权利要求
+    def_claims: str          # Step 5 输出：定义权利要求
     mirrored_claims: str     # Step 6 输出：镜像权利要求（整合后的完整套件）
     final_claims: str        # Step 7 输出：最终优化权利要求
 
