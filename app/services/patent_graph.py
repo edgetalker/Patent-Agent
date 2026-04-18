@@ -218,6 +218,11 @@ async def get_graph():
 
 async def close_graph() -> None:
     """在 FastAPI shutdown 中调用，关闭 DB 连接。"""
-    if _checkpointer and hasattr(_checkpointer, "conn"):
+    global _checkpointer
+    if _checkpointer is None:
+        return
+    try:
         await _checkpointer.conn.close()
         logger.info("SQLite checkpointer connection closed")
+    except Exception as e:
+        logger.warning(f"Checkpointer close error (ignored): {e}")

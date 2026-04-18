@@ -13,8 +13,8 @@ class StartSessionRequest(BaseModel):
         examples=["本发明涉及一种..."],
     )
     mirror_types: str = Field(
-        default="方法",
-        description="步骤6 镜像权利要求类型，以英文分号分隔。如 '方法' 或 '装置;系统'",
+        default="装置",
+        description="步骤6 镜像权利要求类型，以英文分号分隔。如 '装置' 或 '装置;系统'",
     )
 
 

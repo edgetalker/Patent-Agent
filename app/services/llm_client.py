@@ -33,4 +33,5 @@ def get_llm() -> ChatOpenAI:
         max_tokens=settings.deepseek_max_tokens,
         temperature=settings.deepseek_temperature,
         streaming=True,
+        request_timeout=120,
     )

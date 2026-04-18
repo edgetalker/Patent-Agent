@@ -245,11 +245,9 @@ async def export_session(thread_id: str):
     summary="删除会话（调试用）",
 )
 async def delete_session(thread_id: str):
-    """
-    注意：LangGraph SQLite checkpointer 暂不提供直接删除单条 checkpoint 的公开 API，
-    此端点通过验证 session 存在性来确认操作目标，实际清理需要直接操作 DB 或重置。
-    生产环境建议实现完整的 session 清理逻辑。
-    """
+    import aiosqlite
+    from app.config import get_settings
+
     graph = await get_graph()
     config = {"configurable": {"thread_id": thread_id}}
 
@@ -257,9 +255,29 @@ async def delete_session(thread_id: str):
     if not state or not state.values:
         raise SessionNotFoundError(thread_id)
 
-    logger.warning(f"[{thread_id[:8]}] Delete requested (data remains in DB, thread invalidated)")
+    settings = get_settings()
+
+    # 先确认实际表名（不同 langgraph 版本表名不同）
+    async with aiosqlite.connect(settings.db_path) as db:
+        async with db.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'"
+        ) as cursor:
+            tables = {row[0] async for row in cursor}
+
+        deleted_from = []
+        for table in ["checkpoints", "checkpoint_blobs", "checkpoint_writes"]:
+            if table in tables:
+                await db.execute(
+                    f"DELETE FROM {table} WHERE thread_id = ?", (thread_id,)
+                )
+                deleted_from.append(table)
+
+        await db.commit()
+
+    logger.info(f"[{thread_id[:8]}] Session deleted from tables: {deleted_from}")
     return {
         "success": True,
         "thread_id": thread_id,
-        "message": "Session marked as deleted. Use a new thread_id to start fresh.",
+        "deleted_from": deleted_from,
+        "message": "Session deleted.",
     }
